@@ -6,8 +6,10 @@
 #include <iostream>
 
 #include "MvCameraControl.h"
-
 #include "hik_camera_io.hpp"
+
+namespace ne_io
+{
 
 HikCam::HikCam()
     : handle(NULL),
@@ -145,3 +147,5 @@ void HikCam::getImg(){
     MV_CC_GetImageBuffer(handle, &stImageInfo, 100);
     //printf("Get Image Buffer: Width[%d], Height[%d], FrameNum[%d]\n", stImageInfo.stFrameInfo.nWidth, stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nFrameNum);
 }
+
+}//namespace ne_io

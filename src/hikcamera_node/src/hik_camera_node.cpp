@@ -1,6 +1,8 @@
 #include "hik_camera_node.hpp"
 #include <sensor_msgs/msg/image.hpp>
 #include <std_msgs/msg/header.hpp>
+namespace ne_io
+{
 
 using SetParametersResult = rcl_interfaces::msg::SetParametersResult;
 
@@ -66,3 +68,5 @@ int main(int argc, char *argv[])
     rclcpp::shutdown();
     return 0;
 }
+
+}namespace ne_io

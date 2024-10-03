@@ -8,6 +8,9 @@
 
 #include "MvCameraControl.h"
 
+namespace ne_io
+{
+
 class HikCam
 {
 public:
@@ -37,4 +40,5 @@ private:
 	MV_CC_DEVICE_INFO_LIST stDeviceList;
 };
 
+}//namespace ne_io
 #endif

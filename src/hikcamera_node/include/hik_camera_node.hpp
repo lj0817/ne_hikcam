@@ -11,6 +11,9 @@
 #include "hik_camera_io.hpp"
 #include "rcl_interfaces/msg/set_parameters_result.hpp"
 
+namespace ne_io
+{
+
 class ImagePublisher : public rclcpp::Node
 {
 public:
@@ -27,5 +30,7 @@ private:
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr parameter_callback_handle_;
 };
+
+}//namespace ne_io
 
 #endif 
