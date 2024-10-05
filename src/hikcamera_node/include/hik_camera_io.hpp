@@ -28,12 +28,12 @@ public:
 	MV_FRAME_OUT stImageInfo;
 	
 private:
+	int nRet;
 	int WidthValue;
     int HeightValue;
 
     float ExposureTimeValue;
     float GainValue;
-	int nRet;
 	
 	MVCC_INTVALUE stIntVal;
 	MVCC_FLOATVALUE stFloatVal;

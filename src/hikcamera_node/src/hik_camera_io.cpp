@@ -12,9 +12,9 @@ namespace ne_io
 {
 
 HikCam::HikCam()
-    : handle(NULL),
+     : pData(NULL),
+      handle(NULL),
       nRet(MV_OK),
-      pData(NULL),
       WidthValue(1280),
       HeightValue(1024),
       ExposureTimeValue(3000.0),
@@ -50,7 +50,7 @@ void HikCam::start()
     MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &stDeviceList);
     if (stDeviceList.nDeviceNum > 0)
     {
-        for (int i = 0; i < stDeviceList.nDeviceNum; i++)
+        for (unsigned int i = 0; i < stDeviceList.nDeviceNum; i++)
         {
             printf("[device %d]:\n", i);
             MV_CC_DEVICE_INFO *pDeviceInfo = stDeviceList.pDeviceInfo[i];

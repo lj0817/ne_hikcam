@@ -14,20 +14,20 @@
 namespace ne_io
 {
 
-class ImagePublisher : public rclcpp::Node
+class ImagePublisherNode : public rclcpp::Node
 {
 public:
-   ImagePublisher(const std::string &name);
-    ~ImagePublisher();
+   ImagePublisherNode(const rclcpp::NodeOptions & options);
+    ~ImagePublisherNode();
 
 private:
     void hikImgCallback();
-    rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_publisher_; 
     std::unique_ptr<cv::Mat> src;
     HikCam hk_cam_; 
     std::thread cam_thread_;
     double my_param;
     rclcpp::TimerBase::SharedPtr timer_;
+    rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_publisher_; 
     rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr parameter_callback_handle_;
 };
 

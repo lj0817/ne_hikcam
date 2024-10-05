@@ -6,12 +6,12 @@ namespace ne_io
 
 using SetParametersResult = rcl_interfaces::msg::SetParametersResult;
 
-ImagePublisher::ImagePublisher(const std::string &name)
-: Node(name),
+ImagePublisherNode::ImagePublisherNode(const rclcpp::NodeOptions & options)
+: Node("camera_node",options),
   hk_cam_(),  
   image_publisher_(this->create_publisher<sensor_msgs::msg::Image>("camera/image_raw", 10)) 
 {
-    RCLCPP_INFO(this->get_logger(), "%s 节点已经启动.", name.c_str());
+    RCLCPP_INFO(this->get_logger(), " 节点已经启动.");
 
     this->declare_parameter<double>("exposuretime",3000.00);
     
@@ -35,12 +35,12 @@ ImagePublisher::ImagePublisher(const std::string &name)
    
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(10),
-        std::bind(&ImagePublisher::hikImgCallback, this)
+        std::bind(&ImagePublisherNode::hikImgCallback, this)
     );
     hk_cam_.start();
 }
 
-void ImagePublisher::hikImgCallback()
+void ImagePublisherNode::hikImgCallback()
 {
    
     hk_cam_.getImg();
@@ -54,19 +54,14 @@ void ImagePublisher::hikImgCallback()
     image_publisher_->publish(*msg);  // 发布图像消息
 }
 
-ImagePublisher::~ImagePublisher(){
+ImagePublisherNode::~ImagePublisherNode(){
     if(cam_thread_.joinable()){
         cam_thread_.join();
     }
 }
 
-int main(int argc, char *argv[])
-{
-    rclcpp::init(argc, argv);
-    auto node = std::make_shared<ImagePublisher>("camera_node");
-    rclcpp::spin(node);
-    rclcpp::shutdown();
-    return 0;
-}
+}//namespace ne_io
 
-}namespace ne_io
+#include "rclcpp_components/register_node_macro.hpp"
+
+RCLCPP_COMPONENTS_REGISTER_NODE(ne_io::ImagePublisherNode)
