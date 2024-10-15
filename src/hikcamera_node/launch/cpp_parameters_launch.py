@@ -10,7 +10,8 @@ def generate_launch_description():
             output="screen",
             emulate_tty=True,
             parameters=[
-                {"exposuretime": 4000.00}
+                {"exposuretime": 4000.00},
+                {"gain":16.00}
             ]
         )
     ])
