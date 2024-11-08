@@ -182,7 +182,7 @@ void HikCam::reNewGainStart(double b)
 
 void HikCam::getImg(){
     MV_CC_FreeImageBuffer(handle, &stImageInfo);
-    MV_CC_GetImageBuffer(handle, &stImageInfo, 100);
+    MV_CC_GetImageBuffer(handle, &stImageInfo, 1000);
     //printf("Get Image Buffer: Width[%d], Height[%d], FrameNum[%d]\n", stImageInfo.stFrameInfo.nWidth, stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nFrameNum);
 }
 

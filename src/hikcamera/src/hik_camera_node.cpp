@@ -9,12 +9,12 @@ using SetParametersResult = rcl_interfaces::msg::SetParametersResult;
 HikCameraNode::HikCameraNode(const rclcpp::NodeOptions & options)
 : Node("camera_node",options),
   hk_cam_(),  
-  image_publisher_(this->create_publisher<sensor_msgs::msg::Image>("ne_io__camera/image_raw", 2)) 
+  image_publisher_(this->create_publisher<sensor_msgs::msg::Image>("/ne_io/hik_camera/image_raw", 2)) 
 {
-    RCLCPP_INFO(this->get_logger(), "节点已经启动.");
+    RCLCPP_INFO(this->get_logger(), "Starting 'camera_node' Node!");
 
     this->declare_parameter<double>("exposuretime",3000.00);
-    this->declare_parameter<double>("gain",8.00);//注意这个参数不能调成0或115，在这个范围内调，选好gain改变exposuretime最好
+    this->declare_parameter<double>("gain",20.0);//注意这个参数不能调成0或115，在这个范围内调，选好gain改变exposuretime最好
     
     // 添加参数更改回调
     parameter_callback_handle_ = this->add_on_set_parameters_callback(
@@ -51,7 +51,7 @@ void HikCameraNode::hikImgCallback()
    }catch (const cv::Exception& e){
     RCLCPP_INFO(this->get_logger(), "Failed to convert Bayer image to RGB");
     hk_cam_.reConnectStart();
-    std::cout<<"yessssss!!!!"<<std::endl;
+    std::cout<<"reconnect successfully!!!!"<<std::endl;
     imgChange();
    }
 }
@@ -66,10 +66,15 @@ void HikCameraNode::imgChange(){
     hk_cam_.getImg();
     cv::Mat src(cv::Size(hk_cam_.stImageInfo.stFrameInfo.nWidth, hk_cam_.stImageInfo.stFrameInfo.nHeight), CV_8UC1);
     std::memcpy(src.data, hk_cam_.stImageInfo.pBufAddr, hk_cam_.stImageInfo.stFrameInfo.nWidth * hk_cam_.stImageInfo.stFrameInfo.nHeight);
-    //RCLCPP_INFO(this->get_logger(), "Source image: Width=%d, Height=%d, Channels=%d",
-            // src.cols, src.rows, src.channels());
+
     cv::Mat bgr_image;
+    if(hk_cam_.stImageInfo.stFrameInfo.enPixelType ==PixelType_Gvsp_BayerGB8 )
+    {
+    cv::cvtColor(src, bgr_image, cv::COLOR_BayerGB2RGB); 
+    }
+    else{
     cv::cvtColor(src, bgr_image, cv::COLOR_BayerRG2RGB); 
+    }
 
     img_msg_header_.frame_id = "hikcamera_node";
     img_msg_header_.stamp = now();
